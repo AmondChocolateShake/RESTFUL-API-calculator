@@ -104,24 +104,25 @@ app.post("/calculator/:id/add",(req,res)=>{
             value:0,
             id:id
         })
-    }
-    const {num1,num2}=req.body;
-    const calc=calculate(id,"add",num1,num2);
-
-    if(calc!==null){
-        res.status(200).json({
-            status:"successed",
-            message:"연산에 성공하였습니다.",
-            value:calc.value,
-            id:calc.id
-        })
     }else{
-        res.status(500).json({
-            status:"failed",
-            message:"연산에 실패하였습니다.",
-            value:0,
-            id:id
-        })
+        const {num1,num2}=req.body;
+        const calc=calculate(id,"add",num1,num2);
+    
+        if(calc!==null){
+            res.status(200).json({
+                status:"successed",
+                message:"연산에 성공하였습니다.",
+                value:calc.value,
+                id:calc.id
+            })
+        }else{
+            res.status(500).json({
+                status:"failed",
+                message:"연산에 실패하였습니다.",
+                value:0,
+                id:id
+            })
+        }
     }
 
 })

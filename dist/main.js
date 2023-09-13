@@ -10,7 +10,6 @@ const port = 3000;
 let calcs = [];
 let cnt = 1;
 /** -------------서버 설정 구간 ----------------------------*/
-// body-parser 미들웨어 사용
 app.use(express_1.default.json()); // JSON 데이터 파싱
 app.use(express_1.default.urlencoded({ extended: false }));
 app.listen(port, () => {
