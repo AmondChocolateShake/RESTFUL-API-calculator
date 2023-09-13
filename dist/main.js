@@ -23,7 +23,20 @@ app.get('/', (req, res) => {
 /** ---------------------------------------------------- */
 //계산 결과값 조회
 app.get("/calculator/:id", (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
+    const value = getValueFromCalculatorById(id);
+    if (value !== null) {
+        res.json({
+            value: value,
+            status: "successed"
+        });
+    }
+    else {
+        res.json({
+            value: value,
+            status: "failed"
+        });
+    }
 });
 //계산기 생성
 app.post("/calculator", (req, res) => {
@@ -92,10 +105,17 @@ function createCalculator(name) {
 }
 //id에 해당하는 계산기를 찾고 결과값을 반환하는 함수
 function getValueFromCalculatorById(id) {
+    const calc = findCalcById(id);
+    if (calc !== null) {
+        return calc.value;
+    }
+    else {
+        return null;
+    }
 }
 //id에 해당하는 계산기 free
 function deleteCalculator(id) {
-    let calcIndex = findCalcById(id);
+    let calcIndex = findCalcIndexById(id);
     //해당 객체 인덱스를 찾은 경우
     if (calcIndex !== -1) {
         calcs.splice(calcIndex, 1);
@@ -111,9 +131,9 @@ function deleteCalculator(id) {
 //연산하고자 하는 값 2개
 function calculate(id, method, num1, num2) {
 }
-//id를 이용해 생성된 계산기 조회
+//id를 이용해 생성된 계산기 인덱스 조회
 //검색에 실패한 경우 -1 리턴
-function findCalcById(id) {
+function findCalcIndexById(id) {
     //id에 해당하는 객체 찾기
     const obj = calcs.find(obj => obj.id === id);
     let index = -1;
@@ -123,4 +143,17 @@ function findCalcById(id) {
         index = calcs.indexOf(obj);
     }
     return index;
+}
+//id를 이용해 생성된 계산기 조회
+//검색에 실패한 경우 -1 리턴
+function findCalcById(id) {
+    //id에 해당하는 객체 찾기
+    const obj = calcs.find(obj => obj.id === id);
+    // console.log(temp);
+    if (obj !== undefined) {
+        return obj;
+    }
+    else {
+        return null;
+    }
 }
