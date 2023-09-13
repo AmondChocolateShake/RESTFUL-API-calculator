@@ -26,7 +26,7 @@ app.get("/calculator/:id", (req, res) => {
     const id = parseInt(req.params.id);
     const value = getValueFromCalculatorById(id);
     if (value !== null) {
-        res.json({
+        res.status(200).json({
             value: value,
             status: "successed"
         });
@@ -46,7 +46,7 @@ app.post("/calculator", (req, res) => {
     //응답 분기
     if (newCalc === null) {
         //계산기 생성 실패
-        res.json({
+        res.status(200).json({
             status: "failed",
             id: 0,
             name: "",
@@ -67,7 +67,7 @@ app.post("/calculator", (req, res) => {
 app.delete("/calculator/:id", (req, res) => {
     const id = parseInt(req.params.id);
     if (deleteCalculator(id)) {
-        res.json({
+        res.status(200).json({
             status: "successed",
             message: "해당 계산기 삭제에 성공했습니다.",
             id: id,
@@ -87,7 +87,7 @@ app.post("/calculator/:id/add", (req, res) => {
     const { num1, num2 } = req.body;
     const calc = calculate(id, "add", num1, num2);
     if (calc !== null) {
-        res.json({
+        res.status(200).json({
             status: "successed",
             message: "연산에 성공하였습니다.",
             value: calc.value,
@@ -109,7 +109,7 @@ app.post("/calculator/:id/sum", (req, res) => {
     const { num1, num2 } = req.body;
     const calc = calculate(id, "sum", num1, num2);
     if (calc !== null) {
-        res.json({
+        res.status(200).json({
             status: "successed",
             message: "연산에 성공하였습니다.",
             value: calc.value,
@@ -131,7 +131,7 @@ app.post("/calculator/:id/multiple", (req, res) => {
     const { num1, num2 } = req.body;
     const calc = calculate(id, "multiple", num1, num2);
     if (calc !== null) {
-        res.json({
+        res.status(200).json({
             status: "successed",
             message: "연산에 성공하였습니다.",
             value: calc.value,
