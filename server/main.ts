@@ -8,7 +8,7 @@ let cnt=1;
 
 /** -------------서버 설정 구간 ----------------------------*/
 
-// body-parser 미들웨어 사용
+
 app.use(express.json()); // JSON 데이터 파싱
 app.use(express.urlencoded({ extended: false }));
 
