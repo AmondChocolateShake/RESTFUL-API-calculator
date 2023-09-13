@@ -97,7 +97,23 @@ app.delete("/calculator/:id",(req,res)=>{
 app.post("/calculator/:id/add",(req,res)=>{
     const id=parseInt(req.params.id);
     const {num1,num2}=req.body;
-    calculate(id,"add",num1,num2);
+    const calc=calculate(id,"add",num1,num2);
+
+    if(calc!==null){
+        res.json({
+            status:"successed",
+            message:"연산에 성공하였습니다.",
+            value:calc.value,
+            id:calc.id
+        })
+    }else{
+        res.json({
+            status:"failed",
+            message:"연산에 실패하였습니다.",
+            value:0,
+            id:id
+        })
+    }
 
 })
 
@@ -106,7 +122,24 @@ app.post("/calculator/:id/add",(req,res)=>{
 app.post("/calculator/:id/sum",(req,res)=>{
     const id=parseInt(req.params.id)
     const {num1,num2}=req.body;
-    calculate(id,"sum",num1,num2); 
+    const calc=calculate(id,"sum",num1,num2);
+
+    if(calc!==null){
+        res.json({
+            status:"successed",
+            message:"연산에 성공하였습니다.",
+            value:calc.value,
+            id:calc.id
+        })
+    }else{
+        res.json({
+            status:"failed",
+            message:"연산에 실패하였습니다.",
+            value:0,
+            id:id
+        })
+    }
+
 })
 
 
@@ -114,7 +147,23 @@ app.post("/calculator/:id/sum",(req,res)=>{
 app.post("/calculator/:id/multiple",(req,res)=>{
     const id=parseInt(req.params.id)
     const {num1,num2}=req.body;
-    calculate(id,"multiple",num1,num2);
+    const calc=calculate(id,"multiple",num1,num2);
+
+    if(calc!==null){
+        res.json({
+            status:"successed",
+            message:"연산에 성공하였습니다.",
+            value:calc.value,
+            id:calc.id
+        })
+    }else{
+        res.json({
+            status:"failed",
+            message:"연산에 실패하였습니다.",
+            value:0,
+            id:id
+        })
+    }
 })
 
 
@@ -168,7 +217,8 @@ function deleteCalculator(id:number){
 //계산하고자 하는 계산기의 id를 받음,
 //연산 종류를 기재 ["add","sum","multiple"],
 //연산하고자 하는 값 2개
-function calculate(id:number,method:string,num1:number,num2:number){
+//계산기 검색 실패시 null 반환
+function calculate(id:number,method:string,num1:number,num2:number):Calculator|null{
     const calc=findCalcById(id);
 
     if(calc!==null){
@@ -183,6 +233,9 @@ function calculate(id:number,method:string,num1:number,num2:number){
                 break;
         }
     }
+
+    return calc;
+
 }
 
 //id를 이용해 생성된 계산기 인덱스 조회
