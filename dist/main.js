@@ -28,7 +28,26 @@ app.get("/calculator/:id", (req, res) => {
 app.post("/calculator", (req, res) => {
     const { name } = req.body;
     console.log(name);
-    createCalculator(name);
+    const newCalc = createCalculator(name);
+    //응답 분기
+    if (newCalc === null) {
+        //계산기 생성 실패
+        res.json({
+            status: "failed",
+            id: 0,
+            name: "",
+            message: "계산기 생성에 실패했습니다."
+        });
+    }
+    else {
+        //계산기 생성 성공
+        res.json({
+            status: "successed",
+            id: newCalc.id,
+            name: newCalc.name,
+            message: "계산기 생성에 성공했습니다."
+        });
+    }
 });
 //계산기 삭제
 app.delete("/calculator/:id", (req, res) => {
@@ -44,9 +63,16 @@ app.post("/calculator/:id/multiple", (req, res) => {
 });
 //계산기 생성 함수
 function createCalculator(name) {
-    const calc = new calculators_1.default(cnt++, name);
-    calcs.push(calc);
-    console.log(`${JSON.stringify(calc)} 생성됨`);
+    try {
+        const calc = new calculators_1.default(cnt++, name);
+        console.log(`${JSON.stringify(calc)} 생성됨`);
+        //calc 관리 배열에 추가
+        calcs.push(calc);
+        return calc;
+    }
+    catch (err) {
+        return null;
+    }
 }
 //id에 해당하는 계산기를 찾고 결과값을 반환하는 함수
 function getValueFromCalculatorById(id) {

@@ -28,6 +28,7 @@ app.get('/', (req: Request, res: Response) => {
 
 //계산 결과값 조회
 app.get("/calculator/:id",(req,res)=>{
+    const id=req.params.id;
 
 })
 
@@ -57,13 +58,13 @@ app.post("/calculator",(req,res)=>{
             message:"계산기 생성에 성공했습니다."
         })
     }
-
-
 })
 
 
 //계산기 삭제
 app.delete("/calculator/:id",(req,res)=>{
+    const id=parseInt(req.params.id);
+    deleteCalculator(id);
 
 })
 
@@ -95,11 +96,8 @@ function createCalculator(name:string):Calculator|null{
         calcs.push(calc);
         
         return calc;
-
     }catch(err){
-
         return null;
-
     }
 }
 
@@ -112,8 +110,10 @@ function getValueFromCalculatorById(id:number){
 
 //id에 해당하는 계산기 free
 function deleteCalculator(id:number){
-
+    
 }
+
+
 
 //계산 실행!
 //계산하고자 하는 계산기의 id를 받음,
@@ -123,8 +123,10 @@ function calculate(id:number,method:string,num1:number,num2:number){
 
 }
 
-
-
+//id를 이용해 생성된 계산기 조회
+function findCalcById(id:number){
+    console.log(calcs.find(obj=>obj.id===id));
+}
 
 
 
