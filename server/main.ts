@@ -95,37 +95,34 @@ app.delete("/calculator/:id",(req,res)=>{
 //계산기 더하기 연산
 app.post("/calculator/:id/add",(req,res)=>{
     const id=parseInt(req.params.id);
-    const {num1,num2}=req.body;
 
     //파라미터 2개를 넘기지 않는 경우
-    if(!num1 || !num2){
+    if(Object.keys(req.body).length!==2){
         res.status(400).json({
             status:"failed",
             message:"연산에 실패했습니다. 2개의 파라미터를 전송하세요.",
             value:0,
             id:id
         })
-    }else{
-        const {num1,num2}=req.body;
-        const calc=calculate(id,"add",num1,num2);
-    
-        if(calc!==null){
-            res.status(200).json({
-                status:"successed",
-                message:"연산에 성공하였습니다.",
-                value:calc.value,
-                id:calc.id
-            })
-        }else{
-            res.status(500).json({
-                status:"failed",
-                message:"연산에 실패하였습니다.",
-                value:0,
-                id:id
-            })
-        }
     }
+    const {num1,num2}=req.body;
+    const calc=calculate(id,"add",num1,num2);
 
+    if(calc!==null){
+        res.status(200).json({
+            status:"successed",
+            message:"연산에 성공하였습니다.",
+            value:calc.value,
+            id:calc.id
+        })
+    }else{
+        res.status(500).json({
+            status:"failed",
+            message:"연산에 실패하였습니다.",
+            value:0,
+            id:id
+        })
+    }
 
 })
 
@@ -133,9 +130,9 @@ app.post("/calculator/:id/add",(req,res)=>{
 //계산기 빼기 연산
 app.post("/calculator/:id/sum",(req,res)=>{
     const id=parseInt(req.params.id)
-    const {num1,num2}=req.body;
+
     //파라미터가 2개가 아닌 경우
-    if(!num1 || !num2){
+    if(Object.keys(req.body).length!==2){
         res.status(400).json({
             status:"failed",
             message:"연산에 실패했습니다. 2개의 파라미터를 전송하세요.",
