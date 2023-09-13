@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import bodyParser from 'body-parser';
 import Calculator from './calculators'
 
 const app = express();
@@ -10,8 +9,8 @@ let cnt=1;
 /** -------------서버 설정 구간 ----------------------------*/
 
 // body-parser 미들웨어 사용
-app.use(bodyParser.json()); // JSON 데이터 파싱
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json()); // JSON 데이터 파싱
+app.use(express.urlencoded({ extended: false }));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
