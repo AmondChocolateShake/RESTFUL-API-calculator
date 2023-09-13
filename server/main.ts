@@ -19,7 +19,7 @@ app.listen(port, () => {
 
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, made by Dongju');
+  res.status(200).send('Hello, Made by Dongju');
 });
 
 
@@ -38,7 +38,7 @@ app.get("/calculator/:id",(req,res)=>{
             status:"successed"
         })
     }else{
-        res.json({
+        res.status(404).json({
             value:value,
             status:"failed"
         })
@@ -57,7 +57,7 @@ app.post("/calculator",(req,res)=>{
     //응답 분기
     if(newCalc===null){
         //계산기 생성 실패
-        res.json({
+        res.status(500).json({
             status:"failed",
             id:0,
             name:"",
@@ -85,7 +85,7 @@ app.delete("/calculator/:id",(req,res)=>{
             id:id,
         })
     }else{
-        res.json({
+        res.status(500).json({
             status:"failed",
             message:"해당 계산기 삭제에 실패했습니다.",
             id:id,
@@ -117,7 +117,7 @@ app.post("/calculator/:id/add",(req,res)=>{
             id:calc.id
         })
     }else{
-        res.json({
+        res.status(500).json({
             status:"failed",
             message:"연산에 실패하였습니다.",
             value:0,
@@ -131,23 +131,35 @@ app.post("/calculator/:id/add",(req,res)=>{
 //계산기 빼기 연산
 app.post("/calculator/:id/sum",(req,res)=>{
     const id=parseInt(req.params.id)
-    const {num1,num2}=req.body;
-    const calc=calculate(id,"sum",num1,num2);
 
-    if(calc!==null){
-        res.status(200).json({
-            status:"successed",
-            message:"연산에 성공하였습니다.",
-            value:calc.value,
-            id:calc.id
-        })
-    }else{
-        res.json({
+    //파라미터가 2개가 아닌 경우
+    if(Object.keys(req.body).length!==2){
+        res.status(400).json({
             status:"failed",
-            message:"연산에 실패하였습니다.",
+            message:"연산에 실패했습니다. 2개의 파라미터를 전송하세요.",
             value:0,
             id:id
         })
+    }else{
+
+        const {num1,num2}=req.body;
+        const calc=calculate(id,"sum",num1,num2);
+    
+        if(calc!==null){
+            res.status(200).json({
+                status:"successed",
+                message:"연산에 성공하였습니다.",
+                value:calc.value,
+                id:calc.id
+            })
+        }else{
+            res.status(500).json({
+                status:"failed",
+                message:"연산에 실패하였습니다.",
+                value:0,
+                id:id
+            })
+        }
     }
 
 })
@@ -156,24 +168,37 @@ app.post("/calculator/:id/sum",(req,res)=>{
 //계산기 곱하기 연산
 app.post("/calculator/:id/multiple",(req,res)=>{
     const id=parseInt(req.params.id)
-    const {num1,num2}=req.body;
-    const calc=calculate(id,"multiple",num1,num2);
 
-    if(calc!==null){
-        res.status(200).json({
-            status:"successed",
-            message:"연산에 성공하였습니다.",
-            value:calc.value,
-            id:calc.id
-        })
-    }else{
-        res.json({
+    //파라미터가 2개가 아닌 경우
+    if(Object.keys(req.body).length!==2){
+        res.status(400).json({
             status:"failed",
-            message:"연산에 실패하였습니다.",
+            message:"연산에 실패했습니다. 2개의 파라미터를 전송하세요.",
             value:0,
             id:id
         })
+    }else{
+        const {num1,num2}=req.body;
+        const calc=calculate(id,"multiple",num1,num2);
+    
+        if(calc!==null){
+            res.status(200).json({
+                status:"successed",
+                message:"연산에 성공하였습니다.",
+                value:calc.value,
+                id:calc.id
+            })
+        }else{
+            res.status(500).json({
+                status:"failed",
+                message:"연산에 실패하였습니다.",
+                value:0,
+                id:id
+            })
+        }
     }
+
+
 })
 
 

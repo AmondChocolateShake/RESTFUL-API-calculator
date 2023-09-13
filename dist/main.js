@@ -46,7 +46,7 @@ app.post("/calculator", (req, res) => {
     //응답 분기
     if (newCalc === null) {
         //계산기 생성 실패
-        res.status(200).json({
+        res.json({
             status: "failed",
             id: 0,
             name: "",
@@ -55,7 +55,7 @@ app.post("/calculator", (req, res) => {
     }
     else {
         //계산기 생성 성공
-        res.json({
+        res.status(201).json({
             status: "successed",
             id: newCalc.id,
             name: newCalc.name,
@@ -84,6 +84,15 @@ app.delete("/calculator/:id", (req, res) => {
 //계산기 더하기 연산
 app.post("/calculator/:id/add", (req, res) => {
     const id = parseInt(req.params.id);
+    //파라미터 2개를 넘기지 않는 경우
+    if (Object.keys(req.body).length !== 2) {
+        res.status(400).json({
+            status: "failed",
+            message: "연산에 실패했습니다. 2개의 파라미터를 전송하세요.",
+            value: 0,
+            id: id
+        });
+    }
     const { num1, num2 } = req.body;
     const calc = calculate(id, "add", num1, num2);
     if (calc !== null) {
