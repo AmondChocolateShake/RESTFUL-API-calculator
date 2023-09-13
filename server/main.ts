@@ -95,19 +95,26 @@ app.delete("/calculator/:id",(req,res)=>{
 
 //계산기 더하기 연산
 app.post("/calculator/:id/add",(req,res)=>{
+    const id=parseInt(req.params.id);
+    const {num1,num2}=req.body;
+    calculate(id,"add",num1,num2);
 
 })
 
 
 //계산기 빼기 연산
 app.post("/calculator/:id/sum",(req,res)=>{
-
+    const id=parseInt(req.params.id)
+    const {num1,num2}=req.body;
+    calculate(id,"sum",num1,num2); 
 })
 
 
 //계산기 곱하기 연산
 app.post("/calculator/:id/multiple",(req,res)=>{
-
+    const id=parseInt(req.params.id)
+    const {num1,num2}=req.body;
+    calculate(id,"multiple",num1,num2);
 })
 
 
@@ -162,7 +169,20 @@ function deleteCalculator(id:number){
 //연산 종류를 기재 ["add","sum","multiple"],
 //연산하고자 하는 값 2개
 function calculate(id:number,method:string,num1:number,num2:number){
+    const calc=findCalcById(id);
 
+    if(calc!==null){
+        switch(method){
+            case "add": calc.add(num1,num2);
+                break;
+    
+            case "sum": calc.sum(num1,num2);
+                break;
+    
+            case "multiple": calc.multiple(num1,num2);
+                break;
+        }
+    }
 }
 
 //id를 이용해 생성된 계산기 인덱스 조회
