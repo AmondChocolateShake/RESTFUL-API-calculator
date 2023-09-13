@@ -64,8 +64,19 @@ app.post("/calculator",(req,res)=>{
 //계산기 삭제
 app.delete("/calculator/:id",(req,res)=>{
     const id=parseInt(req.params.id);
-    deleteCalculator(id);
-
+    if(deleteCalculator(id)){
+        res.json({
+            status:"successed",
+            message:"해당 계산기 삭제에 성공했습니다.",
+            id:id,
+        })
+    }else{
+        res.json({
+            status:"failed",
+            message:"해당 계산기 삭제에 실패했습니다.",
+            id:id,
+        })
+    }
 })
 
 //계산기 더하기 연산
@@ -110,7 +121,19 @@ function getValueFromCalculatorById(id:number){
 
 //id에 해당하는 계산기 free
 function deleteCalculator(id:number){
-    
+    let calcIndex=findCalcById(id);
+
+    //해당 객체 인덱스를 찾은 경우
+    if(calcIndex!==-1){
+        calcs.splice(calcIndex,1);
+        return true
+
+    }else{
+        return false
+    }
+
+
+
 }
 
 
@@ -124,8 +147,19 @@ function calculate(id:number,method:string,num1:number,num2:number){
 }
 
 //id를 이용해 생성된 계산기 조회
-function findCalcById(id:number){
-    console.log(calcs.find(obj=>obj.id===id));
+//검색에 실패한 경우 -1 리턴
+function findCalcById(id:number):number{
+    //id에 해당하는 객체 찾기
+    const obj=calcs.find(obj=>obj.id===id)
+    let index=-1;
+
+    // console.log(temp);
+    if(obj!==undefined){
+        //해당 객체 인덱스 번호
+        index=calcs.indexOf(obj);
+    }
+
+    return index
 }
 
 
